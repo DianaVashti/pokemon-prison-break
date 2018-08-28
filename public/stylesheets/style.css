@@ -1,0 +1,72 @@
+/* --------------- globals on all views ------------------------------ */
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+    url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+    url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+html {
+  margin: 0;
+}
+
+body {
+  font-family: "Roboto", Monaco, monospace;
+  color: black;
+  height: auto;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  /* background-image: url("../images/crumple.jpg"); */
+  /* background-color: #303030;
+  background-size: 100% 100%;
+  background-repeat: no-repeat; */
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  cursor: grab;
+}
+
+.hero {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+   flex: 1;
+   display: flex;
+}
+
+header,
+footer {
+  width: 100%;
+  background-color: teal;
+}
+
+nav,
+aside {
+  width: 20vw;
+  background-color: ghostwhite;
+}
+
+article {
+   flex: 1;
+   background-color: aqua;
+}
+
+nav {
+  order: -1;
+}
