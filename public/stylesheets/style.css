@@ -70,3 +70,46 @@ article {
 nav {
   order: -1;
 }
+
+input {
+  width: 25px;
+  text-align: center;
+  margin-right: 5;
+  margin-left: 5;
+}
+
+label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-screen {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.wrong-guesses  {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+}
+
+.you-won {
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+}
+
+.next-round {
+  margin: 5px;
+  align-self: center;
+}
+
+#new-round-clickable:hover {
+  cursor: cell;
+}

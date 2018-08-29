@@ -5,8 +5,7 @@ import LandingPage from './views/LandingPage/LandingPage';
 export default class ReactRouter extends Component {
 
   render() {
-    const landingPageComponent = (props, state, params) =>
-      <LandingPage />;
+    const landingPageComponent = () => <LandingPage />;
 
     return (
       <Router history={browserHistory}>
