@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import YouLost from './YouLost';
 
 export default class LandingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      wordCollection: ['Mr.Poopybutthole', 'Squanchy', 'Picklerick', 'Beth', 'Jerry', 'Summer', 'Morty'],
+      wordCollection: [],
       keyWord: 'sample',
       isLoading: true,
       wrongGuesses: [],
@@ -13,8 +14,11 @@ export default class LandingPage extends Component {
       value: '',
       wins: 0,
       loss: false,
-      justWon: false
+      justWon: false,
+      pokemon: ''
     };
+    this.fetchPokemon = this.fetchPokemon.bind(this);
+    this.fetchWords = this.fetchWords.bind(this);
     this.renderView = this.renderView.bind(this);
     this.renderKeyword = this.renderKeyword.bind(this);
     this.selectKeyword = this.selectKeyword.bind(this);
@@ -27,7 +31,31 @@ export default class LandingPage extends Component {
   }
 
   componentWillMount() {
-    this.selectKeyword();
+    this.fetchPokemon();
+    this.fetchWords();
+  }
+
+  fetchWords() {
+    axios.get('/words')
+      .then(data => {
+        const dataArray = data.data.split('\n');
+        this.setState({ wordCollection: dataArray });
+      })
+      .then(() => this.selectKeyword())
+      .catch(Error);
+  }
+
+  fetchPokemon() {
+    // 802 pokemon! 7/11/2018
+    const x = Math.floor(Math.random() * 802) + 1;
+
+    axios.get('https://pokeapi.co/api/v2/pokemon/' + x + '/')
+      .then(data => {
+        this.setState({
+          pokemon: data.data.species.name
+        });
+      })
+      .catch(error => console.log('ERROR!!!!!!!!!!', error));
   }
 
   checkWinOrLoss() {
@@ -78,7 +106,6 @@ export default class LandingPage extends Component {
 
   selectKeyword() {
     const { wordCollection } = this.state;
-
     if (wordCollection.length !== 0) {
       const index = Math.floor(Math.random() * (wordCollection.length));
       const keyWord = wordCollection[index];
@@ -88,7 +115,7 @@ export default class LandingPage extends Component {
         keyWord,
         isLoading: false,
         correctGuesses
-      });
+      }, () => console.log(keyWord));
     }
   }
 
@@ -109,7 +136,7 @@ export default class LandingPage extends Component {
     return (
       <div className="hero">
         <header className="header">
-          Header...
+          Pokèmon Prison Break
         </header>
         <main className="main-content">
           <article className="game-console">
@@ -134,19 +161,21 @@ export default class LandingPage extends Component {
           </aside>
         </main>
         <footer className="footer">
-          footer...
+          Diana Maria Vashti 2018
         </footer>
       </div>
     );
   }
 
   renderKeyword() {
+    // can be seperate component when needs more design
     return this.state.isLoading
       ? <p>Loading...</p>
       : this.state.correctGuesses.map((item, index) => <p key={index}>{item}</p>);
   }
 
   renderWrongGuesses() {
+    // can be seperate component when needs more design
     return (
       this.state.wrongGuesses.map((item, index) => <p key={index}>{item}</p>)
     );

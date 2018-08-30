@@ -53,7 +53,16 @@ main {
 header,
 footer {
   width: 100%;
-  background-color: teal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(#FFCB05, #C7A008);
+  height: 42px;
+  box-shadow: inset 5px 5px 10px #3c5aa6, inset -5px -5px 10px #2A75BB;
+  -moz-box-shadow: inset 5px 5px 10px #3c5aa6, inset -5px -5px 10px #2A75BB;
+  -webkit-box-shadow: inset 5px 5px 10px #3c5aa6, inset -5px -5px 10px #2A75BB;
+  z-index: 101;
+  outline: 2px solid #3c5aa6;
 }
 
 nav,

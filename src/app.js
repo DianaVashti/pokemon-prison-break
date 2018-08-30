@@ -1,9 +1,9 @@
 const express = require('express')
+const request = require('request');
 const path = require('path')
 const favicon = require('serve-favicon')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
-
 const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
 const webpackConfig = require('../webpack.config.js')
@@ -16,12 +16,25 @@ const compiler = webpack(webpackConfig)
 //app.use(favicon(path.join(__dirname, '../public', 'favicon.ico')))
 app.use(logger('dev'))
 app.use(bodyParser.json())
+app.use(bodyParser.text({ type: 'text/html' }))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, '../public')))
 
-app.get('*', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '/index.html'))
-})
+app.get('/words', (req, res) => {
+  request({
+    uri: 'http://app.linkedin-reach.io/words',
+  }, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      res.send(body);
+    } else {
+      res.json(error);
+    }
+  });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
