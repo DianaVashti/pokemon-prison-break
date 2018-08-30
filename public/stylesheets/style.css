@@ -56,24 +56,38 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(#FFCB05, #C7A008);
   height: 42px;
-  box-shadow: inset 5px 5px 10px #3c5aa6, inset -5px -5px 10px #2A75BB;
-  -moz-box-shadow: inset 5px 5px 10px #3c5aa6, inset -5px -5px 10px #2A75BB;
-  -webkit-box-shadow: inset 5px 5px 10px #3c5aa6, inset -5px -5px 10px #2A75BB;
   z-index: 101;
-  outline: 2px solid #3c5aa6;
+  color: white;
+}
+
+header {
+  background-color: #C7A008;
+  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+footer {
+  background-color: #3C5AA6;
+  box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.4);
 }
 
 nav,
 aside {
   width: 20vw;
-  background-color: ghostwhite;
+  background-color: #2A75BB;
+  color: white;
+  padding: 15;
 }
 
 article {
    flex: 1;
-   background-color: aqua;
+   background-color: #FFCB05;
+   color: #3C5AA6;
+   padding: 15;
 }
 
 nav {
@@ -121,4 +135,19 @@ label {
 
 #new-round-clickable:hover {
   cursor: cell;
+}
+
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.wins {
+  margin-bottom: 15;
 }
