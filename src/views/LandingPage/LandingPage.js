@@ -14,8 +14,9 @@ export default class LandingPage extends Component {
       value: '',
       wins: 0,
       loss: false,
-      justWon: false,
-      pokemon: ''
+      stage: 'door',
+      pokemon: '',
+      pokemonFriends: []
     };
     this.fetchPokemon = this.fetchPokemon.bind(this);
     this.fetchWords = this.fetchWords.bind(this);
@@ -31,7 +32,6 @@ export default class LandingPage extends Component {
   }
 
   componentWillMount() {
-    this.fetchPokemon();
     this.fetchWords();
   }
 
@@ -53,25 +53,47 @@ export default class LandingPage extends Component {
       .then(data => {
         this.setState({
           pokemon: data.data.species.name
-        });
+        }, () => console.log(this.state.pokemon));
       })
       .catch(error => console.log('ERROR!!!!!!!!!!', error));
   }
 
   checkWinOrLoss() {
-    const { wrongGuesses, keyWord, correctGuesses, wins, loss } = this.state;
+    const { wrongGuesses, keyWord, correctGuesses, wins, loss, stage, pokemon, pokemonFriends } = this.state;
     const keyWordAllCaps = keyWord.toUpperCase();
     const correctGuessCheck = correctGuesses.join('').toUpperCase();
 
-    if (wrongGuesses.length >= 6 || loss === true) {
+    if ((wrongGuesses.length >= 6 || loss === true) && stage === 'door') {
       this.setState({ loss: true });
-    } else if (keyWordAllCaps === correctGuessCheck) {
+    } else if (keyWordAllCaps === correctGuessCheck && stage === 'door') {
+      const wordLength = pokemon.length;
+      const newCorrectGuesses = new Array(wordLength).fill('_', 0, wordLength);
+      this.setState({
+        isLoading: true,
+        keyWord: pokemon,
+        wrongGuesses: [],
+        correctGuesses: newCorrectGuesses,
+        wins: wins + 1,
+        stage: 'friendship'
+      }, () => this.setState({ isLoading: false }));
+    } else if (wrongGuesses.length >= 6 && stage === 'friendship') {
       this.setState({
         keyWord: '',
         wrongGuesses: [],
         correctGuesses: [],
-        wins: wins + 1,
-        justWon: true
+        pokemon: '',
+        stage: 'continue'
+      });
+    } else if (keyWordAllCaps === correctGuessCheck && stage === 'friendship') {
+      const newFriendsArray = pokemonFriends;
+      newFriendsArray.push(pokemon);
+      this.setState({
+        keyWord: '',
+        wrongGuesses: [],
+        correctGuesses: [],
+        pokemon: '',
+        pokemonFriends: newFriendsArray,
+        stage: 'continue'
       });
     }
   }
@@ -115,19 +137,22 @@ export default class LandingPage extends Component {
         keyWord,
         isLoading: false,
         correctGuesses
-      }, () => console.log(keyWord));
+      }, () => {
+        console.log(keyWord);
+        this.fetchPokemon();
+      });
     }
   }
 
   handleNextRound(event) {
     event.preventDefault();
-    this.setState({ justWon: false }, () => {
+    this.setState({ stage: 'door' }, () => {
       return this.selectKeyword();
     });
   }
 
   renderView() {
-    const { loss, wins } = this.state;
+    const { loss, wins, pokemonFriends } = this.state;
 
     if (loss === true) {
       return <YouLost />;
@@ -146,17 +171,18 @@ export default class LandingPage extends Component {
             {this.renderInput()}
           </article>
           <nav className="poke-stats">
-            Pokemon stats...
-          </nav>
-          <aside className="scoreboard">
+            <div className='column'>Wrong Guesses:</div>
             <div className="wrong-guesses">
               {this.renderWrongGuesses()}
             </div>
-            <div>
-              Doors Unlocked: {wins}
+          </nav>
+          <aside className="scoreboard">
+            <div className='column wins'>
+              Pokèmon saved: {wins}
             </div>
-            <div>
-              Pokémon saved....
+            <div className='column'>
+              New Friends!:
+              <div className='column'>{pokemonFriends.join('\n')}</div>
             </div>
           </aside>
         </main>
@@ -182,10 +208,10 @@ export default class LandingPage extends Component {
   }
 
   renderInput() {
-    if (this.state.justWon === true) {
+    if (this.state.stage === 'continue') {
       return (
         <div>
-          <div className='next-round'>You Just Won</div>
+          <div className='next-round'>Will you save them all!? Keep going!</div>
           <div className='you-won'>
             <div className='next-round'>Start Next Round</div>
             <div
