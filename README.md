@@ -33,9 +33,13 @@ How many can you save? How many new friends will you make in the process? Just d
 - The rules to the game are shown on the app landing page 😎
 - If you want to cheat and know the words, they are always logged to the browser console 😉
 
+### Description
+This is a single-page react web-application. The application uses a very basic and minimal server and otherwise handles all data and state management using the axios library to make AJAX calls from the front-end. The stack is: NODE/REACT/EXPRESS. Calls to the pokedex API are made using axios, while calls to the words API are routed through Express to deal with CORS restrictions. All of the non-configuration source code in within the `/src` folder where the server is located at `/src/app.js` and the components all are within the `src/views` folder. Right now there is only one main component (`LandingPage`). The app is responsive to a degree though improvements could be made to the accessibility of the mobile view and when making a browser window smaller. Who knew hangman could be so much fun when making Pokémon friends is on the line.
+
+
 ### Things I want to do to this App next:
 - WRITE TESTS!!! (Learn Selenium, and test front end. Use Mocha/Chai to test routes and data from the server.)
-- Reactor and remove un-used modules.
+- Reactor to make more & smaller components and remove un-used modules.
 - Make the difficulty settings dynamic and configurable by the player.
 - Address react and material-ui errors that do not seem to affect the app currently but are still worrisome.
 - Make a `hint` feature that either automatically kicks in when the player is on their last guess, or is a selectable event by the user.
