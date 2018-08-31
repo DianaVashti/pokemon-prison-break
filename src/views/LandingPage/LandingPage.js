@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router';
+import PokeView from './PokeView';
+import Rules from './Rules';
 import YouLost from './YouLost';
 
 export default class LandingPage extends Component {
@@ -16,8 +19,10 @@ export default class LandingPage extends Component {
       loss: false,
       stage: 'door',
       pokemon: '',
+      pokemonPicture: '',
       pokemonFriends: []
     };
+    this.renderImageQuote = this.renderImageQuote.bind(this);
     this.fetchPokemon = this.fetchPokemon.bind(this);
     this.fetchWords = this.fetchWords.bind(this);
     this.renderView = this.renderView.bind(this);
@@ -36,13 +41,23 @@ export default class LandingPage extends Component {
   }
 
   fetchWords() {
-    axios.get('/words')
-      .then(data => {
-        const dataArray = data.data.split('\n');
-        this.setState({ wordCollection: dataArray });
-      })
-      .then(() => this.selectKeyword())
-      .catch(Error);
+    if (!this.props.easy) {
+      axios.get('/words')
+        .then(data => {
+          const dataArray = data.data.split('\n');
+          this.setState({ wordCollection: dataArray });
+        })
+        .then(() => this.selectKeyword())
+        .catch(Error);
+    } else if (this.props.easy) {
+      axios.get('/words/easy')
+        .then(data => {
+          const dataArray = data.data.split('\n');
+          this.setState({ wordCollection: dataArray });
+        })
+        .then(() => this.selectKeyword())
+        .catch(Error);
+    }
   }
 
   fetchPokemon() {
@@ -52,7 +67,8 @@ export default class LandingPage extends Component {
     axios.get('https://pokeapi.co/api/v2/pokemon/' + x + '/')
       .then(data => {
         this.setState({
-          pokemon: data.data.species.name
+          pokemon: data.data.species.name,
+          pokemonPicture: data.data.sprites.front_default
         }, () => console.log(this.state.pokemon));
       })
       .catch(error => console.log('ERROR!!!!!!!!!!', error));
@@ -64,37 +80,37 @@ export default class LandingPage extends Component {
     const correctGuessCheck = correctGuesses.join('').toUpperCase();
 
     if ((wrongGuesses.length >= 6 || loss === true) && stage === 'door') {
-      this.setState({ loss: true });
+      setTimeout(() => this.setState({ loss: true }), 1500);
     } else if (keyWordAllCaps === correctGuessCheck && stage === 'door') {
       const wordLength = pokemon.length;
       const newCorrectGuesses = new Array(wordLength).fill('_', 0, wordLength);
-      this.setState({
+      setTimeout(() => this.setState({
         isLoading: true,
         keyWord: pokemon,
         wrongGuesses: [],
         correctGuesses: newCorrectGuesses,
         wins: wins + 1,
         stage: 'friendship'
-      }, () => this.setState({ isLoading: false }));
+      }, () => this.setState({ isLoading: false })), 1500);
     } else if (wrongGuesses.length >= 6 && stage === 'friendship') {
-      this.setState({
+      setTimeout(() => this.setState({
         keyWord: '',
         wrongGuesses: [],
         correctGuesses: [],
         pokemon: '',
         stage: 'continue'
-      });
+      }), 1500);
     } else if (keyWordAllCaps === correctGuessCheck && stage === 'friendship') {
       const newFriendsArray = pokemonFriends;
       newFriendsArray.push(pokemon);
-      this.setState({
+      setTimeout(() => this.setState({
         keyWord: '',
         wrongGuesses: [],
         correctGuesses: [],
         pokemon: '',
         pokemonFriends: newFriendsArray,
         stage: 'continue'
-      });
+      }), 1500);
     }
   }
 
@@ -151,8 +167,30 @@ export default class LandingPage extends Component {
     });
   }
 
+  renderImageQuote() {
+    const { stage } = this.state;
+
+    if (stage === 'door') {
+      return (
+        <div className='center-text-column'>
+          <p> FREE ME PLEASE! Guess the</p>
+          <p className='bold'>PASSCODE</p>
+        </div>
+      );
+    } else if (stage === 'friendship') {
+      return (
+        <div className='center-text-column'>
+          <p> Thank You Human, I will be your friend if you know my</p>
+          <p className='bold'>SPECIES</p>
+        </div>
+      );
+    } else if (stage === 'continue') {
+      return;
+    }
+  }
+
   renderView() {
-    const { loss, wins, pokemonFriends } = this.state;
+    const { loss, wins, pokemonFriends, pokemonPicture } = this.state;
 
     if (loss === true) {
       return <YouLost />;
@@ -161,20 +199,19 @@ export default class LandingPage extends Component {
     return (
       <div className="hero">
         <header className="header">
-          Pokèmon Prison Break
+          <Link to='/'>Pokèmon Prison Break</Link>
         </header>
         <main className="main-content">
           <article className="game-console">
+            <PokeView image={pokemonPicture} />
+            {this.renderImageQuote()}
             <div className="game-screen">
               {this.renderKeyword()}
             </div>
             {this.renderInput()}
           </article>
           <nav className="poke-stats">
-            <div className='column'>Wrong Guesses:</div>
-            <div className="wrong-guesses">
-              {this.renderWrongGuesses()}
-            </div>
+            <Rules />
           </nav>
           <aside className="scoreboard">
             <div className='column wins'>
@@ -183,6 +220,10 @@ export default class LandingPage extends Component {
             <div className='column'>
               New Friends!:
               <div className='column'>{pokemonFriends.join('\n')}</div>
+            </div>
+            <div className='column wrong-guess'>Wrong Guesses:</div>
+            <div className="wrong-guesses">
+              {this.renderWrongGuesses()}
             </div>
           </aside>
         </main>
@@ -215,8 +256,7 @@ export default class LandingPage extends Component {
           <div className='you-won'>
             <div className='next-round'>Start Next Round</div>
             <div
-              id="new-round-clickable"
-              className='next-round'
+              className='next-round new-round-clickable'
               onClick={this.handleNextRound}
             >
               ⬆️
@@ -237,7 +277,7 @@ export default class LandingPage extends Component {
               value={this.state.value}
               onChange={this.handleChange}
             />
-            <div onClick={this.handleSubmit}>⬆️</div>
+            <div className='new-round-clickable' onClick={this.handleSubmit}>⬆️</div>
           </label>
         </form>
       </div>

@@ -32,6 +32,18 @@ app.get('/words', (req, res) => {
   });
 });
 
+app.get('/words/easy', (req, res) => {
+  request({
+    uri: 'http://app.linkedin-reach.io/words?difficulty=1&minLength=5&maxLength=9',
+  }, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      res.send(body);
+    } else {
+      res.json(error);
+    }
+  });
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'));
 });
