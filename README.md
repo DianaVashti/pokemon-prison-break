@@ -34,8 +34,10 @@ How many can you save? How many new friends will you make in the process? Just d
 - If you want to cheat and know the words, they are always logged to the browser console 😉
 
 ### Things I want to do to this App next:
+- WRITE TESTS!!! (Learn Selenium, and test front end. Use Mocha/Chai to test routes and data from the server.)
+- Reactor and remove un-used modules.
 - Make the difficulty settings dynamic and configurable by the player.
-- Address react and material-ui errors that do not seem to affect the app currently but are still worrisome. 
-- Make a `hint` feature that either automatically kicks in when the player is on their last guess, or is a selectable event by the user. 
+- Address react and material-ui errors that do not seem to affect the app currently but are still worrisome.
+- Make a `hint` feature that either automatically kicks in when the player is on their last guess, or is a selectable event by the user.
 - Improve design and feedback to user on success / fail / win / loss.
 - Make the amount of pokemon that could be chosen dynamic so not all 803 forms are options for casual fans who may only know the big names or original 151 (including 'Mew').
