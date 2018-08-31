@@ -33,6 +33,10 @@ a {
   color: inherit;
 }
 
+a, header {
+  text-decoration: none;
+}
+
 a:hover {
   cursor: grab;
 }
@@ -115,6 +119,13 @@ label {
   justify-content: space-around;
 }
 
+.center-text-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .wrong-guesses  {
   display: flex;
   flex-direction: column-reverse;
@@ -133,7 +144,7 @@ label {
   align-self: center;
 }
 
-#new-round-clickable:hover {
+.new-round-clickable:hover {
   cursor: cell;
 }
 
@@ -148,6 +159,30 @@ label {
   align-items: center;
   justify-content: center;
 }
+
 .wins {
   margin-bottom: 15;
+}
+
+.wrong-guess {
+  margin-top: 15;
+}
+
+.rules {
+  font-size: 11px;
+  overflow-y: visible;
+}
+
+.single-rule {
+  margin-bottom: 7;
+}
+
+.lost {
+  display: flex;
+  flex-direction: column;
+}
+
+.bold {
+  font-size: 1.1em;
+  text-decoration: underline overline #FF3028;
 }
