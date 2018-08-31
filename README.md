@@ -20,7 +20,7 @@ How many can you save? How many new friends will you make in the process? Just d
   - open a browser and go to 'localhost:3000'
 - from local folder:
   - unzip the files
-  - change all files with extension `.txt` to `.js`
+  - change all files* with extension `.txt` to `.js`
   - navigate to this folder in your console / terminal
   - $`npm i` to install dependencies
   - $ `npm run start`
@@ -41,3 +41,13 @@ How many can you save? How many new friends will you make in the process? Just d
 - Make a `hint` feature that either automatically kicks in when the player is on their last guess, or is a selectable event by the user.
 - Improve design and feedback to user on success / fail / win / loss.
 - Make the amount of pokemon that could be chosen dynamic so not all 803 forms are options for casual fans who may only know the big names or original 151 (including 'Mew').
+
+*There are the files that need to be changed to have extension `.js`:
+  - /webpack.config.txt
+  - /src/app.txt
+  - /src/main.txt
+  - /src/reactRouter.txt
+  - /src/view/LandingPage/LandingPage.txt
+  - /src/view/LandingPage/PokeView.txt
+  - /src/view/LandingPage/Rules.txt
+  - /src/view/LandingPage/YouLost.txt
