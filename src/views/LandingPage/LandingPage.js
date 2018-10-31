@@ -9,7 +9,7 @@ export default class LandingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      wordCollection: [],
+      wordCollection: ['skeleton', 'ghoul', 'zombie', 'vampire'],
       keyWord: 'sample',
       isLoading: true,
       wrongGuesses: [],
@@ -41,23 +41,24 @@ export default class LandingPage extends Component {
   }
 
   fetchWords() {
-    if (!this.props.easy) {
-      axios.get('/words')
-        .then(data => {
-          const dataArray = data.data.split('\n');
-          this.setState({ wordCollection: dataArray });
-        })
-        .then(() => this.selectKeyword())
-        .catch(Error);
-    } else if (this.props.easy) {
-      axios.get('/words/easy')
-        .then(data => {
-          const dataArray = data.data.split('\n');
-          this.setState({ wordCollection: dataArray });
-        })
-        .then(() => this.selectKeyword())
-        .catch(Error);
-    }
+//     if (!this.props.easy) {
+//       axios.get('/words')
+//         .then(data => {
+//           const dataArray = data.data.split('\n');
+//           this.setState({ wordCollection: dataArray });
+//         })
+//         .then(() => this.selectKeyword())
+//         .catch(Error);
+//     } else if (this.props.easy) {
+//       axios.get('/words/easy')
+//         .then(data => {
+//           const dataArray = data.data.split('\n');
+//           this.setState({ wordCollection: dataArray });
+//         })
+//         .then(() => this.selectKeyword())
+//         .catch(Error);
+//     }
+    this.selectKeyword();
   }
 
   fetchPokemon() {
